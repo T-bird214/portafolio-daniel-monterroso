@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import portrait from "@/public/images/daniel-monterroso.jpg";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowDown, ArrowUpRight, Download } from "lucide-react";
@@ -33,8 +34,8 @@ export default function Hero() {
                 key={index}
                 initial={false}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.25 }}
+                exit={{ opacity: 0, y: reduced ? 0 : -8 }}
+                transition={{ duration: reduced ? 0 : 0.25 }}
               >
                 {titles[index]}
               </motion.p>
@@ -67,11 +68,12 @@ export default function Hero() {
         <div className="portrait-composition">
           <div className="portrait-frame">
             <Image
-              src="/images/daniel-monterroso.jpg"
+              src={portrait}
               alt="Retrato de Daniel Monterroso"
               fill
               priority
-              sizes="(max-width: 700px) 90vw, 420px"
+              quality={90}
+              sizes="(max-width: 700px) calc(100vw - 52px), (max-width: 1000px) 40vw, 420px"
               className="portrait"
             />
             <div className="portrait-shade" />

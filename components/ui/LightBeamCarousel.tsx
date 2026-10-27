@@ -79,15 +79,29 @@ const nodes = [
 export default function LightBeamCarousel() {
   const [active, setActive] = useState(0),
     [paused, setPaused] = useState(false),
-    [hovered, setHovered] = useState(false);
+    [hovered, setHovered] = useState(false),
+    [keyboardFocus, setKeyboardFocus] = useState(false);
   const reduced = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const visible = useInView(ref, { amount: 0.25 });
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const visible = useInView(carouselRef, { amount: 0.1 });
+  const animating = !paused && !hovered && !keyboardFocus && !reduced && visible;
   useEffect(() => {
-    if (paused || hovered || reduced || !visible) return;
+    if (!animating) return;
     const id = setInterval(() => setActive((i) => (i + 1) % nodes.length), 5000);
     return () => clearInterval(id);
-  }, [paused, hovered, reduced, visible]);
+  }, [animating]);
+  useEffect(() => {
+    const tabs = tabsRef.current;
+    const tab = tabs?.children[active] as HTMLElement | undefined;
+    if (!tabs || !tab) return;
+    // Scroll only the tab strip; never move the page during autoplay.
+    tabs.scrollTo({
+      left: tab.offsetLeft - tabs.offsetLeft - (tabs.clientWidth - tab.clientWidth) / 2,
+      behavior: reduced ? "instant" : "smooth",
+    });
+  }, [active, reduced]);
   const node = nodes[active];
   const Icon = node.icon;
   function select(i: number) {
@@ -95,7 +109,7 @@ export default function LightBeamCarousel() {
     setPaused(true);
   }
   return (
-    <section id="ecosistema" className="section wrap" ref={ref}>
+    <section id="ecosistema" className="section wrap">
       <div className="section-heading">
         <div>
           <p className="eyebrow">01 / ECOSISTEMA</p>
@@ -112,6 +126,8 @@ export default function LightBeamCarousel() {
       </div>
       <div
         className="beam-shell depth-card"
+        ref={carouselRef}
+        data-animating={animating}
         style={
           {
             "--node-color": node.color,
@@ -125,17 +141,23 @@ export default function LightBeamCarousel() {
             )[node.color],
           } as CSSProperties
         }
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onFocusCapture={() => setHovered(true)}
+        onPointerEnter={(e) => {
+          if (e.pointerType === "mouse") setHovered(true);
+        }}
+        onPointerLeave={(e) => {
+          if (e.pointerType === "mouse") setHovered(false);
+        }}
+        onFocusCapture={(e) => {
+          if (e.target.matches(":focus-visible")) setKeyboardFocus(true);
+        }}
         onBlurCapture={(e) => {
-          if (!e.currentTarget.contains(e.relatedTarget)) setHovered(false);
+          if (!e.currentTarget.contains(e.relatedTarget)) setKeyboardFocus(false);
         }}
         role="region"
         aria-roledescription="carrusel"
         aria-label="Ecosistema profesional"
       >
-        <div className="beam-tabs" role="group" aria-label="Seleccionar conexión">
+        <div ref={tabsRef} className="beam-tabs" role="group" aria-label="Seleccionar conexión">
           {nodes.map((n, i) => (
             <button
               key={n.name}
@@ -149,11 +171,32 @@ export default function LightBeamCarousel() {
           ))}
         </div>
         <div className="beam-body">
-          <div className="optical-scene" aria-hidden="true">
+          <div
+            className="optical-scene"
+            aria-hidden="true"
+            onPointerDown={(e) => {
+              if (e.pointerType !== "touch") return;
+              touchStart.current = { x: e.clientX, y: e.clientY };
+              e.currentTarget.setPointerCapture(e.pointerId);
+            }}
+            onPointerCancel={() => {
+              touchStart.current = null;
+            }}
+            onPointerUp={(e) => {
+              const start = touchStart.current;
+              touchStart.current = null;
+              if (!start) return;
+              const dx = e.clientX - start.x;
+              const dy = e.clientY - start.y;
+              if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+                select(active + (dx < 0 ? 1 : -1));
+              }
+            }}
+          >
             <div className="orbit orbit-one" />
             <div className="orbit orbit-two" />
             <div className="optical-conduit">
-              <span key={active} className={paused || reduced ? "laser static" : "laser"} />
+              <span key={active} className="laser" />
             </div>
             <div key={node.name} className="hologram">
               <div className="shockwave" />
@@ -171,7 +214,7 @@ export default function LightBeamCarousel() {
                 initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: reduced ? 0 : 0.25 }}
               >
                 <p className="eyebrow node-label">{node.label}</p>
                 <h3>{node.detail}</h3>
@@ -205,8 +248,13 @@ export default function LightBeamCarousel() {
             </button>
             <button
               className="icon-button"
+              hidden={!!reduced}
               aria-label={paused ? "Reproducir carrusel" : "Pausar carrusel"}
-              onClick={() => setPaused((p) => !p)}
+              onClick={() => {
+                setPaused((p) => !p);
+                setHovered(false);
+                setKeyboardFocus(false);
+              }}
             >
               {paused ? <Play size={16} /> : <Pause size={16} />}
             </button>
