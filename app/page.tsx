@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main>
+      <main id="contenido">
         <Hero />
         <LightBeamCarousel />
         <Projects />

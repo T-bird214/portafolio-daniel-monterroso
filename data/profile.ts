@@ -152,13 +152,12 @@ export const crossCuttingNote = {
 };
 
 export const skills = [
-  { name: "Ventas & Desarrollo Comercial", level: 92 },
-  { name: "Servicio al Cliente / CX", level: 92 },
-  { name: "Administración & Liderazgo", level: 85 },
-  { name: "Operaciones & Logística", level: 85 },
-  { name: "Licitaciones / Guatecompras", level: 70 },
-  { name: "Tecnología, IA & Automatización", level: 68 },
-  { name: "Desarrollo Web (Vercel / Supabase)", level: 55 },
+  { name: "Ventas & Desarrollo Comercial", domain: "Ejecución comercial" },
+  { name: "Servicio al Cliente / CX", domain: "Gestión de relaciones" },
+  { name: "Administración & Liderazgo", domain: "Gestión ejecutiva" },
+  { name: "Operaciones & Logística", domain: "Gestión operativa" },
+  { name: "Licitaciones / Guatecompras", domain: "Gestión de procesos" },
+  { name: "Tecnología, IA & Automatización", domain: "Aplicación al negocio" },
 ];
 
 export const sectors = [
@@ -244,10 +243,10 @@ export const internalTraining = [
 ];
 
 export const languages = [
-  { name: "Español", level: "Nativo" as string | null, pct: 100 },
-  { name: "Inglés · lectura", level: null as string | null, pct: 75 },
-  { name: "Inglés · escritura", level: null as string | null, pct: 60 },
-  { name: "Inglés · conversación", level: null as string | null, pct: 45 },
+  { name: "Español", level: "Nativo" as string | null },
+  { name: "Inglés · lectura", level: null as string | null },
+  { name: "Inglés · escritura", level: null as string | null },
+  { name: "Inglés · conversación", level: null as string | null },
 ];
 
 export const targetRoles = [

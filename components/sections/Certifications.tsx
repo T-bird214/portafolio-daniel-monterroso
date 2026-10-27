@@ -96,14 +96,8 @@ export default function Certifications() {
                       {lang.level ? ` · ${lang.level}` : ""}
                     </span>
                     <span className="font-mono text-[#6A6A5E] dark:text-[#A2A292]">
-                      {lang.pct}%
+                      {lang.level ?? "En desarrollo"}
                     </span>
-                  </div>
-                  <div className="h-1 w-full overflow-hidden rounded-full bg-[#1C1C1C]/10 dark:bg-[#ECECE3]/10">
-                    <div
-                      className="h-full rounded-full bg-[#5A5A40] dark:bg-[#C68A3E]"
-                      style={{ width: `${lang.pct}%` }}
-                    />
                   </div>
                 </li>
               ))}
