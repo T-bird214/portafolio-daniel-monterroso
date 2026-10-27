@@ -1,105 +1,81 @@
 @import "tailwindcss";
 
-@theme inline {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-
-  --color-editorial-bg-light: #f5f5f0;
-  --color-editorial-bg-dark: #161614;
-  --color-editorial-text-light: #1c1c1c;
-  --color-editorial-text-dark: #ececde;
-  --color-editorial-accent: #5a5a40;
-  --color-editorial-gold: #c68a3e;
-  --color-editorial-muted-light: #6a6a5e;
-  --color-editorial-muted-dark: #a2a292;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-  :root {
-    color-scheme: light;
+  html {
+    scroll-behavior: smooth;
   }
-
-  .dark {
-    color-scheme: dark;
-  }
-
   body {
-    @apply bg-[#F5F5F0] text-[#1C1C1C] antialiased transition-colors duration-300;
-    font-family: var(--font-sans);
-  }
-
-  .dark body {
-    @apply bg-[#161614] text-[#ECECE3];
-  }
-
-  /* Respeta la preferencia de movimiento reducido del sistema operativo en
-     todas las transiciones/animaciones CSS del sitio. */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
-
-  /* Foco visible consistente para navegación por teclado (WCAG 2.4.7) */
-  :focus-visible {
-    outline: 2px solid #5a5a40;
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
-  .dark :focus-visible {
-    outline-color: #c68a3e;
+    @apply bg-[#F6F6F2] text-[#121417] dark:bg-[#090B10] dark:text-[#F4F6FB] transition-colors duration-300;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 }
 
-/* Scrollbar editorial */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(28, 28, 28, 0.15);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(28, 28, 28, 0.3);
-}
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(90, 90, 64, 0.3);
-}
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(90, 90, 64, 0.5);
+@keyframes beamSweep {
+  0% { transform: translateX(-110%); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateX(110%); opacity: 0; }
 }
 
-/* Detalles editoriales reutilizables */
-.editorial-border {
-  @apply border-[#1C1C1C]/10 dark:border-[#ECECE3]/10;
+@keyframes pulseRing {
+  0% { transform: scale(0.82); opacity: 0.85; }
+  75% { transform: scale(1.38); opacity: 0; }
+  100% { transform: scale(1.42); opacity: 0; }
 }
 
-.editorial-border-strong {
-  @apply border-[#1C1C1C]/20 dark:border-[#ECECE3]/20;
+@keyframes float3D {
+  0%, 100% { transform: translateY(0px) rotateX(3deg) rotateY(-3deg); }
+  50% { transform: translateY(-7px) rotateX(-3deg) rotateY(3deg); }
 }
 
-.glow-on-hover:hover {
-  box-shadow: 0 4px 20px rgba(90, 90, 64, 0.15);
+@keyframes logoReveal {
+  0% { opacity: 0; transform: scale(0.72) rotate(-6deg); filter: blur(10px) brightness(2.2); }
+  60% { opacity: 1; transform: scale(1.05) rotate(1deg); filter: blur(0px) brightness(1.35); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0px) brightness(1); }
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, #1c1c1c 0%, #8c7d5f 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+@keyframes shockwaveFlash {
+  0% { opacity: 0.9; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1.9); }
 }
 
-.dark .text-gradient {
-  background: linear-gradient(135deg, #ecece3 0%, #c68a3e 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.animate-beam-sweep {
+  animation: beamSweep 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.animate-pulse-ring {
+  animation: pulseRing 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.animate-float-3d {
+  animation: float3D 4.8s ease-in-out infinite;
+}
+
+.animate-logo-reveal {
+  animation: logoReveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-shockwave {
+  animation: shockwaveFlash 0.65s ease-out forwards;
+}
+
+.depth-card {
+  position: relative;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.depth-card:hover {
+  transform: translateY(-3px);
+}
+
+.dark .depth-card {
+  background: linear-gradient(145deg, rgba(17, 21, 32, 0.9) 0%, rgba(10, 13, 20, 0.96) 100%);
+  box-shadow: 0 20px 44px -15px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+html:not(.dark) .depth-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.97) 0%, rgba(248, 249, 251, 0.92) 100%);
+  box-shadow: 0 14px 34px -12px rgba(18, 20, 23, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
 }
