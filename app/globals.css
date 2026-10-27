@@ -681,8 +681,8 @@ h3 {
   gap: 8px;
 }
 .beam-controls .icon-button {
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
 }
 .projects-section,
 .skills-section {
@@ -1600,6 +1600,9 @@ h3 {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .autoplay-control {
+    display: none;
+  }
   html {
     scroll-behavior: auto;
   }

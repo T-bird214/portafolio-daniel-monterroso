@@ -141,12 +141,6 @@ export default function LightBeamCarousel() {
             )[node.color],
           } as CSSProperties
         }
-        onPointerEnter={(e) => {
-          if (e.pointerType === "mouse") setHovered(true);
-        }}
-        onPointerLeave={(e) => {
-          if (e.pointerType === "mouse") setHovered(false);
-        }}
         onFocusCapture={(e) => {
           if (e.target.matches(":focus-visible")) setKeyboardFocus(true);
         }}
@@ -170,7 +164,15 @@ export default function LightBeamCarousel() {
             </button>
           ))}
         </div>
-        <div className="beam-body">
+        <div
+          className="beam-body"
+          onPointerEnter={(e) => {
+            if (e.pointerType === "mouse") setHovered(true);
+          }}
+          onPointerLeave={(e) => {
+            if (e.pointerType === "mouse") setHovered(false);
+          }}
+        >
           <div
             className="optical-scene"
             aria-hidden="true"
@@ -247,7 +249,7 @@ export default function LightBeamCarousel() {
               <ArrowLeft size={18} />
             </button>
             <button
-              className="icon-button"
+              className="icon-button autoplay-control"
               hidden={!!reduced}
               aria-label={paused ? "Reproducir carrusel" : "Pausar carrusel"}
               onClick={() => {
