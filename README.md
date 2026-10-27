@@ -46,7 +46,7 @@ La demo de pipeline no conecta ni escribe en Supabase o HubSpot y no envía What
 - CV canónico: `public/cv/CV_Daniel_Monterroso.pdf`.
 - Copia idéntica: `public/CV_Daniel_Monterroso.pdf`.
 
-Se conserva el PDF canónico que existía al empezar la actualización. Para reemplazarlo por un nuevo CV, sobrescribir ambas rutas y ejecutar sincronización. El archivo histórico `CV_Daniel_Monterroso_2026.pdf` se conserva.
+El PDF canónico corresponde al CV_Daniel_Monterroso_2026.pdf adjuntado por Daniel. Para reemplazarlo por un nuevo CV, sobrescribir ambas rutas y ejecutar sincronización. El archivo histórico `CV_Daniel_Monterroso_2026.pdf` se conserva.
 
 Enlaces: [EvoNest](https://evonest.company/), [LinkedIn](https://linkedin.com/in/daniel-monterroso-gt).
 

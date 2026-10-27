@@ -17,7 +17,7 @@ API con validación de tipos, correo, tamaños, errores JSON y Resend, honeypot 
 
 `portfolio-next/` se convierte en directorio real, con código, assets, scripts, package-lock y configuración. La raíz es la fuente de edición. `npm run sync:portfolio` actualiza la copia sin copiar secretos ni outputs. TypeScript excluye la copia desde la raíz para evitar revisar dos aplicaciones a la vez.
 
-CV canónico existente conservado y copiado a public/CV_Daniel_Monterroso.pdf. SHA-256: `534c1b9d01731e63542e8474ec9fb7e9bc9d09ecbd04cd1956df129ad0ed2145`. No se ha recibido un CV nuevo. Foto JPEG existente conservada.
+CV definitivo adjuntado por Daniel instalado en ambas rutas y en ambas carpetas. SHA-256: `5339a970ac923a62c045fd6f782f4658228c7c1fc1f3079813d88cdfdf98aebd`. El adjunto coincide con la versión histórica CV_Daniel_Monterroso_2026.pdf. Foto JPEG existente conservada.
 
 ## Verificación
 
