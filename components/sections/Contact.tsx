@@ -1,8 +1,8 @@
 import { ArrowUpRight, Code2, Mail, MessageCircle, Network } from "lucide-react";
 import CvButtons from "@/components/CvButtons";
 import ContactForm from "@/components/contact/ContactForm";
-import { DotPattern } from "@/components/ui/dot-pattern";
 import { WhenIdle } from "@/components/ui/when-idle";
+import { DotPattern } from "@/components/ui/lazy-effects";
 import { contact } from "@/data/profile";
 
 const channels = [

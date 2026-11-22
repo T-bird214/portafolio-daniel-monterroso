@@ -1,7 +1,6 @@
 import { ArrowUpRight, Check } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { BentoGrid } from "@/components/ui/bento-grid";
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "@/components/ui/reveal";
 import { Card } from "@/components/ui/card";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { cases, pipelineStages, type CaseStudy } from "@/data/portfolio";
@@ -108,9 +107,9 @@ function CaseBody({ c }: { c: CaseStudy }) {
           <dt className="eyebrow mb-2">Stack</dt>
           <dd className="flex flex-wrap gap-1.5">
             {c.stack.map((s) => (
-              <Badge key={s} variant="outline" className="h-6 px-2.5 font-mono text-[0.72rem]">
+              <span key={s} className="rounded-full border px-2.5 py-0.5 font-mono text-[0.72rem]">
                 {s}
-              </Badge>
+              </span>
             ))}
           </dd>
         </div>
@@ -152,7 +151,7 @@ export default function Cases() {
       </div>
 
       <BentoGrid className="mt-12 auto-rows-auto grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-6">
-        <BlurFade inView className="lg:col-span-6">
+        <Reveal className="lg:col-span-6">
           <Card className="ring-border relative h-full gap-0 rounded-3xl p-6 sm:p-8">
             <ShineBorder
               borderWidth={1.5}
@@ -167,17 +166,17 @@ export default function Cases() {
               </div>
             </div>
           </Card>
-        </BlurFade>
+        </Reveal>
 
-        {[politas, ultra].map((c, i) => (
-          <BlurFade key={c.id} inView delay={0.06 * i} className="lg:col-span-3">
+        {[politas, ultra].map((c) => (
+          <Reveal key={c.id} className="lg:col-span-3">
             <Card className="ring-border h-full gap-0 rounded-3xl p-6 sm:p-8">
               <CaseBody c={c} />
             </Card>
-          </BlurFade>
+          </Reveal>
         ))}
 
-        <BlurFade inView className="lg:col-span-6">
+        <Reveal className="lg:col-span-6">
           <Card className="ring-border h-full gap-0 rounded-3xl p-6 sm:p-8">
             <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
               <CaseBody c={server} />
@@ -186,7 +185,7 @@ export default function Cases() {
               </div>
             </div>
           </Card>
-        </BlurFade>
+        </Reveal>
       </BentoGrid>
     </section>
   );

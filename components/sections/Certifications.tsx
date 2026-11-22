@@ -1,6 +1,6 @@
 import { ArrowUpRight, BadgeCheck, Clock3 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "@/components/ui/reveal";
 import { Card } from "@/components/ui/card";
 import { certificationsRoadmap, type Certification } from "@/data/portfolio";
 import { certifications as pastCertifications } from "@/data/profile";
@@ -51,9 +51,9 @@ export default function Certifications() {
               <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {certificationsRoadmap
                   .filter((c) => c.issuer === group)
-                  .map((cert, i) => (
+                  .map((cert) => (
                     <li key={cert.title}>
-                      <BlurFade inView delay={0.05 * i} className="h-full">
+                      <Reveal className="h-full">
                         <Card className="ring-border h-full justify-between gap-6 rounded-2xl p-5">
                           <div>
                             <p className="text-muted-foreground text-xs">{cert.issuer}</p>
@@ -79,7 +79,7 @@ export default function Certifications() {
                             )}
                           </div>
                         </Card>
-                      </BlurFade>
+                      </Reveal>
                     </li>
                   ))}
               </ul>
