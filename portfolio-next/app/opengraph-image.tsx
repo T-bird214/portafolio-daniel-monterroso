@@ -16,16 +16,16 @@ export default async function OpengraphImage() {
         flexDirection: "column",
         justifyContent: "center",
         padding: "80px",
-        background: "#161614",
-        color: "#ECECE3",
+        background: "#0d0f14",
+        color: "#f5f3ee",
       }}
     >
-      <div style={{ fontSize: 22, letterSpacing: 4, textTransform: "uppercase", color: "#C68A3E" }}>
-        {`${contact.currentRole} · ${contact.location}`}
+      <div style={{ fontSize: 22, letterSpacing: 4, textTransform: "uppercase", color: "#e8b04f" }}>
+        {`Fundador de EvoNest · ${contact.location}`}
       </div>
       <div style={{ fontSize: 72, fontWeight: 500, marginTop: 24 }}>{contact.fullName}</div>
-      <div style={{ fontSize: 28, marginTop: 24, color: "#A2A292", maxWidth: 900 }}>
-        Ventas, Operaciones &amp; Tecnología
+      <div style={{ fontSize: 28, marginTop: 24, color: "#a9afbd", maxWidth: 900 }}>
+        Operaciones, CRM y automatización · HubSpot · n8n · IA
       </div>
     </div>,
     { ...size },

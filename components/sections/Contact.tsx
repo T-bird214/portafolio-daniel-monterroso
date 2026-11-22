@@ -1,148 +1,102 @@
-"use client";
-import { useRef, useState, type FormEvent } from "react";
-import { ArrowUpRight, Mail, MessageCircle, Link } from "lucide-react";
+import { ArrowUpRight, Code2, Mail, MessageCircle, Network } from "lucide-react";
+import CvButtons from "@/components/CvButtons";
+import ContactForm from "@/components/contact/ContactForm";
+import { DotPattern } from "@/components/ui/dot-pattern";
+import { WhenIdle } from "@/components/ui/when-idle";
 import { contact } from "@/data/profile";
+
+const channels = [
+  {
+    label: "Correo",
+    value: contact.email,
+    href: `mailto:${contact.email}`,
+    icon: Mail,
+    external: false,
+  },
+  {
+    label: "WhatsApp",
+    value: contact.phone,
+    href: `https://wa.me/${contact.whatsapp}`,
+    icon: MessageCircle,
+    external: true,
+  },
+  {
+    label: "LinkedIn",
+    value: "daniel-monterroso-gt",
+    href: contact.linkedin,
+    icon: Network,
+    external: true,
+  },
+  {
+    label: "GitHub",
+    value: "T-bird214",
+    href: contact.github,
+    icon: Code2,
+    external: true,
+  },
+];
+
 export default function Contact() {
-  const [state, setState] = useState<"idle" | "sending" | "success" | "error">("idle"),
-    [message, setMessage] = useState("");
-  const loadedAt = useRef<number | null>(null);
-  async function submit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (state === "sending") return;
-    const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form));
-    setState("sending");
-    setMessage("");
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, formLoadedAt: loadedAt.current }),
-      });
-      const result = await response.json();
-      if (!response.ok || !result.ok)
-        throw Error(result.message || "No se pudo enviar el mensaje.");
-      setState("success");
-      setMessage("Mensaje enviado. Gracias por escribir.");
-      form.reset();
-    } catch (error) {
-      setState("error");
-      setMessage(
-        error instanceof Error
-          ? error.message
-          : "No se pudo conectar. Puedes escribir por WhatsApp.",
-      );
-    }
-  }
   return (
-    <section id="contacto" className="section wrap">
-      <p className="eyebrow">05 / SIGUIENTE CONVERSACIÓN</p>
-      <div className="contact-grid">
+    <section
+      id="contacto"
+      aria-labelledby="contacto-title"
+      className="defer-render border-border relative isolate overflow-hidden border-t py-20 sm:py-28"
+    >
+      <div aria-hidden className="absolute top-0 left-0 -z-10 h-[24rem] w-full max-w-[40rem]">
+        <WhenIdle>
+          <DotPattern
+            width={30}
+            height={30}
+            cr={1}
+            className="[mask-image:radial-gradient(ellipse_70%_70%_at_20%_20%,#000_30%,transparent_100%)] text-(--grid-dot)"
+          />
+        </WhenIdle>
+      </div>
+      <div className="wrap grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div>
-          <h2>
-            Tu próximo paso
-            <br />
-            empieza con una
-            <br />
-            <span className="gold-text">conversación.</span>
+          <p className="eyebrow">05 · Contacto</p>
+          <h2 id="contacto-title" className="section-title mt-4">
+            ¿Tu equipo necesita orden en{" "}
+            <span className="serif-accent text-brand">operaciones o CRM</span>?
           </h2>
-          <p className="body-copy contact-intro">
-            ¿Una oportunidad profesional, un reto operativo o un proyecto digital? Hablemos de cómo
-            avanzar.
+          <p className="text-muted-foreground mt-5 text-lg">
+            Busco roles de operaciones, CRM o RevOps, remoto o en Guatemala. Escríbeme por el canal
+            que prefieras; respondo personalmente.
           </p>
-          <a
-            className="contact-whatsapp depth-card"
-            href={`https://wa.me/${contact.whatsapp}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <MessageCircle size={28} />
-            <span>
-              <small>CONTACTO DIRECTO</small>
-              <strong>Hablemos por WhatsApp</strong>
-              <span>{contact.phone}</span>
-            </span>
-            <ArrowUpRight size={22} />
-          </a>
-          <div className="contact-links">
-            <a href={`mailto:${contact.email}`}>
-              <Mail size={16} />
-              Correo
-            </a>
-            <a href={contact.linkedin} target="_blank" rel="noreferrer">
-              <Link size={16} />
-              LinkedIn <ArrowUpRight size={13} />
-            </a>
+
+          <ul className="mt-8 grid gap-2">
+            {channels.map(({ icon: Icon, ...c }) => (
+              <li key={c.label}>
+                <a
+                  href={c.href}
+                  {...(c.external ? { target: "_blank", rel: "noreferrer" } : {})}
+                  className="group border-border bg-card hover:border-brand flex min-h-14 items-center gap-4 rounded-xl border px-4 py-3 transition-colors"
+                >
+                  <span className="bg-muted grid size-9 shrink-0 place-items-center rounded-lg">
+                    <Icon className="size-4" aria-hidden />
+                  </span>
+                  <span className="flex min-w-0 flex-col">
+                    <span className="text-muted-foreground text-xs">{c.label}</span>
+                    <span className="truncate font-medium">{c.value}</span>
+                  </span>
+                  <ArrowUpRight
+                    className="text-muted-foreground group-hover:text-brand ml-auto size-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    aria-hidden
+                  />
+                  {c.external && <span className="sr-only">(se abre en otra pestaña)</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-8">
+            <p className="eyebrow mb-3">Currículum</p>
+            <CvButtons />
           </div>
-          <p className="location">Ciudad de Guatemala · Abierto a nuevas conexiones</p>
         </div>
-        <form
-          className="contact-form depth-card"
-          onSubmit={submit}
-          onFocusCapture={() => {
-            if (loadedAt.current === null) loadedAt.current = Date.now();
-          }}
-        >
-          <span className="eyebrow">CUÉNTAME TU IDEA</span>
-          <label htmlFor="name">
-            Nombre
-            <input
-              id="name"
-              name="name"
-              autoComplete="name"
-              required
-              maxLength={120}
-              placeholder="Tu nombre"
-            />
-          </label>
-          <label htmlFor="email">
-            Correo electrónico
-            <input
-              id="email"
-              name="email"
-              autoComplete="email"
-              type="email"
-              required
-              maxLength={200}
-              placeholder="nombre@empresa.com"
-            />
-          </label>
-          <label htmlFor="company">
-            Empresa <span className="muted">(opcional)</span>
-            <input
-              id="company"
-              name="company"
-              autoComplete="organization"
-              maxLength={200}
-              placeholder="Nombre de tu empresa"
-            />
-          </label>
-          <label htmlFor="message">
-            ¿Cómo podemos trabajar juntos?
-            <textarea
-              id="message"
-              name="message"
-              required
-              maxLength={5000}
-              rows={4}
-              placeholder="Cuéntame un poco del proyecto o la oportunidad…"
-            />
-          </label>
-          <div className="honeypot" aria-hidden="true">
-            <label htmlFor="website">
-              Sitio web
-              <input id="website" name="website" tabIndex={-1} autoComplete="off" />
-            </label>
-          </div>
-          <p className="form-privacy">Usaré tus datos únicamente para responder a esta consulta.</p>
-          <button className="button primary" disabled={state === "sending"} type="submit">
-            {state === "sending" ? "Enviando…" : "Enviar mensaje"}
-            <ArrowUpRight size={17} />
-          </button>
-          <p className={`form-status ${state}`} role="status" aria-live="polite">
-            {message}
-          </p>
-        </form>
+
+        <ContactForm />
       </div>
     </section>
   );

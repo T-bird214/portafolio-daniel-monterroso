@@ -43,8 +43,19 @@ export interface ExperienceItem {
   bullets: string[];
 }
 
-// Orden: más reciente primero (10 puestos, tal como aparecen en la Sección 9.3)
+// Orden: más reciente primero. El puesto de EvoNest proviene del CV 2026
+// (public/cv/CV_Daniel_Monterroso_2026.pdf); el resto, de la Sección 9.3.
 export const experience: ExperienceItem[] = [
+  {
+    role: "Fundador y consultor de arquitectura digital",
+    company: "EvoNest",
+    period: "2025 – Actualidad",
+    bullets: [
+      "Diseño e implemento sistemas comerciales B2B que unen sitio web, HubSpot CRM y automatización con WhatsApp.",
+      "Ejecuto auditorías de calidad antes de cada despliegue: rendimiento, velocidad, accesibilidad y SEO técnico.",
+      "Coordino la red de aliados empresariales (Nests) en seguridad, finanzas, legal y servicios industriales.",
+    ],
+  },
   {
     role: "Gerente de Operaciones",
     company: "Ultra-Clean GT",
@@ -268,7 +279,7 @@ export const targetRoles = [
 ];
 
 export const seo = {
-  title: "Daniel Monterroso — Ventas, Operaciones & Tecnología",
+  title: "Daniel Monterroso — Operaciones, CRM y automatización",
   description:
-    "Más de 10 años combinando ventas, operaciones y tecnología para generar resultados de negocio. Portafolio profesional de Daniel Monterroso, Gerente de Operaciones en Guatemala.",
+    "Fundador de EvoNest. Más de 10 años en operaciones y ventas B2B. Diseño y opero CRM en HubSpot, automatizaciones en n8n y asistentes con IA para pymes en Guatemala.",
 };
