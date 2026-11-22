@@ -2,7 +2,7 @@
 
 import { useRef, useState, type FormEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const field =
@@ -113,14 +113,14 @@ export default function ContactForm() {
       <p className="text-muted-foreground text-sm">
         Uso tus datos solo para responder a este mensaje.
       </p>
-      <Button
+      <button
         type="submit"
         disabled={state === "sending"}
-        className="h-12 gap-2 text-base sm:w-fit sm:px-6"
+        className={cn(buttonVariants(), "h-12 gap-2 text-base sm:w-fit sm:px-6")}
       >
         {state === "sending" ? "Enviando…" : "Enviar mensaje"}
         <ArrowUpRight aria-hidden />
-      </Button>
+      </button>
       <p
         role="status"
         aria-live="polite"

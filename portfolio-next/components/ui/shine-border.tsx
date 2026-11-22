@@ -1,31 +1,18 @@
-"use client";
-
 import * as React from "react";
-
 import { cn } from "@/lib/utils";
 
 interface ShineBorderProps extends React.HTMLAttributes<HTMLDivElement> {
-  /**
-   * Width of the border in pixels
-   * @default 1
-   */
+  /** Ancho del borde en píxeles. */
   borderWidth?: number;
-  /**
-   * Duration of the animation in seconds
-   * @default 14
-   */
+  /** Duración de la animación en segundos. */
   duration?: number;
-  /**
-   * Color of the border, can be a single color or an array of colors
-   * @default "#000000"
-   */
+  /** Color o lista de colores del brillo. */
   shineColor?: string | string[];
 }
 
 /**
- * Shine Border
- *
- * An animated background border effect component with configurable properties.
+ * ShineBorder (Magic UI, MIT). Ya era solo CSS; se quitó "use client" para que
+ * sea un Server Component.
  */
 export function ShineBorder({
   borderWidth = 1,

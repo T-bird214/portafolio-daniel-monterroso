@@ -1,8 +1,7 @@
 import { ArrowUpRight, Code2, Mail, MessageCircle, Network } from "lucide-react";
 import CvButtons from "@/components/CvButtons";
 import ContactForm from "@/components/contact/ContactForm";
-import { WhenIdle } from "@/components/ui/when-idle";
-import { DotPattern } from "@/components/ui/lazy-effects";
+import { DotPattern } from "@/components/ui/dot-pattern";
 import { contact } from "@/data/profile";
 
 const channels = [
@@ -44,14 +43,12 @@ export default function Contact() {
       className="defer-render border-border relative isolate overflow-hidden border-t py-20 sm:py-28"
     >
       <div aria-hidden className="absolute top-0 left-0 -z-10 h-[24rem] w-full max-w-[40rem]">
-        <WhenIdle>
-          <DotPattern
-            width={30}
-            height={30}
-            cr={1}
-            className="[mask-image:radial-gradient(ellipse_70%_70%_at_20%_20%,#000_30%,transparent_100%)] text-(--grid-dot)"
-          />
-        </WhenIdle>
+        <DotPattern
+          width={26}
+          height={26}
+          cr={1}
+          className="[mask-image:radial-gradient(ellipse_70%_70%_at_20%_20%,#000_30%,transparent_100%)] text-(--grid-dot)"
+        />
       </div>
       <div className="wrap grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div>

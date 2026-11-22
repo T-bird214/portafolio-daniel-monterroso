@@ -1,11 +1,12 @@
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { ArrowDownRight, MapPin } from "lucide-react";
 import portrait from "@/public/images/daniel-monterroso.jpg";
 import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
-import { Button } from "@/components/ui/button";
-import { LazyNumberTicker } from "@/components/ui/lazy-number-ticker";
-import { WhenIdle } from "@/components/ui/when-idle";
-import { BorderBeam, DotPattern } from "@/components/ui/lazy-effects";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { buttonVariants } from "@/components/ui/button";
+import { DotPattern } from "@/components/ui/dot-pattern";
+import { NumberTicker } from "@/components/ui/number-ticker";
+import { cn } from "@/lib/utils";
 import CvButtons from "@/components/CvButtons";
 import { headlineParts, heroStats } from "@/data/portfolio";
 import { contact } from "@/data/profile";
@@ -17,6 +18,17 @@ const systemRows = [
   { label: "Envíos a clientes", value: "con aprobación" },
 ];
 
+// <img> generado en el servidor (getImageProps): misma optimización de next/image,
+// sin componente cliente que hidratar.
+const { props: portraitProps } = getImageProps({
+  src: portrait,
+  alt: "Retrato de Daniel Monterroso",
+  priority: true,
+  placeholder: "blur",
+  sizes: "(min-width: 640px) 416px, 304px",
+  quality: 70,
+});
+
 export default function Hero() {
   return (
     <section
@@ -25,22 +37,22 @@ export default function Hero() {
       className="relative isolate overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-24"
     >
       <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[34rem] sm:h-[44rem]">
-        <WhenIdle>
-          <DotPattern
-            width={30}
-            height={30}
-            cr={1}
-            className="[mask-image:radial-gradient(ellipse_70%_70%_at_50%_30%,#000_35%,transparent_100%)] text-(--grid-dot)"
-          />
-        </WhenIdle>
+        <DotPattern
+          width={26}
+          height={26}
+          cr={1}
+          className="[mask-image:radial-gradient(ellipse_70%_70%_at_50%_30%,#000_35%,transparent_100%)] text-(--grid-dot)"
+        />
       </div>
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[40rem] bg-[radial-gradient(ellipse_55%_45%_at_45%_0%,var(--brand-soft),transparent_70%)]"
       />
 
-      <div className="wrap grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-        <div>
+      {/* Móvil: texto, cifras y luego retrato (el texto es el elemento LCP).
+          Escritorio: texto y retrato lado a lado, cifras debajo. */}
+      <div className="wrap grid items-center gap-12 [grid-template-areas:'text'_'stats'_'photo'] lg:grid-cols-[1.15fr_0.85fr] lg:gap-x-16 lg:gap-y-20 lg:[grid-template-areas:'text_photo'_'stats_stats']">
+        <div className="[grid-area:text]">
           <p className="border-border bg-card/70 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium">
             <span className="relative flex size-2">
               <span className="bg-signal absolute inline-flex size-full animate-ping rounded-full opacity-60 motion-reduce:animate-none" />
@@ -86,37 +98,32 @@ export default function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <Button asChild className="h-11 gap-2 px-5 text-[0.95rem]">
-              <a href="#casos">
-                Ver casos reales
-                <ArrowDownRight aria-hidden />
-              </a>
-            </Button>
+            <a href="#casos" className={cn(buttonVariants(), "h-11 gap-2 px-5 text-[0.95rem]")}>
+              Ver casos reales
+              <ArrowDownRight aria-hidden />
+            </a>
             <CvButtons />
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[19rem] sm:max-w-[26rem] lg:mx-0 lg:justify-self-end">
+        <div className="relative mx-auto w-full max-w-[19rem] [grid-area:photo] sm:max-w-[26rem] lg:mx-0 lg:justify-self-end">
           <div className="border-border bg-card relative overflow-hidden rounded-3xl border p-2 shadow-2xl shadow-black/10 dark:shadow-black/40">
-            <Image
-              src={portrait}
-              alt="Retrato de Daniel Monterroso"
-              priority
-              placeholder="blur"
-              sizes="(min-width: 640px) 416px, 304px"
-              quality={70}
+            {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+            <img
+              {...portraitProps}
+              fetchPriority="high"
+              loading="eager"
               className="aspect-[4/4.4] w-full rounded-[1.1rem] object-cover object-top"
             />
-            <WhenIdle media="(min-width: 640px)">
+            <div className="max-sm:hidden">
               <BorderBeam
                 size={140}
                 duration={9}
                 colorFrom="var(--brand)"
                 colorTo="var(--signal)"
                 borderWidth={1.5}
-                className="motion-reduce:hidden"
               />
-            </WhenIdle>
+            </div>
           </div>
 
           <div className="border-border bg-card relative -mt-14 -mr-2 ml-2 rounded-2xl border p-4 shadow-xl sm:ml-10 lg:-ml-12">
@@ -134,10 +141,7 @@ export default function Hero() {
             </dl>
           </div>
         </div>
-      </div>
-
-      <div className="wrap mt-14 sm:mt-20">
-        <dl className="border-border bg-card/60 grid grid-cols-2 overflow-hidden rounded-2xl border lg:grid-cols-4">
+        <dl className="border-border bg-card/60 grid grid-cols-2 overflow-hidden rounded-2xl border [grid-area:stats] lg:grid-cols-4">
           {heroStats.map((s, i) => (
             <div
               key={s.label}
@@ -149,15 +153,15 @@ export default function Hero() {
               ].join(" ")}
             >
               <dt className="text-muted-foreground text-sm">{s.label}</dt>
-              <dd className="text-3xl font-semibold tracking-tight sm:text-4xl">
+              <dd className="text-[1.75rem] font-semibold tracking-tight sm:text-4xl">
                 <span className="sr-only">
                   {s.prefix}
                   {s.value}
                   {s.suffix}
                 </span>
-                <span aria-hidden>
+                <span aria-hidden className="whitespace-nowrap">
                   {s.prefix}
-                  <LazyNumberTicker value={s.value} className="text-foreground tracking-tight" />
+                  <NumberTicker value={s.value} delay={0.15 * i} className="text-foreground" />
                   {s.suffix}
                 </span>
               </dd>

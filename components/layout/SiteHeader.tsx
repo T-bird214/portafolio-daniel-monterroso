@@ -1,10 +1,7 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-import { Menu, Moon, Sun, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import MobileMenu from "./MobileMenu";
+import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { href: "#casos", label: "Casos" },
@@ -13,17 +10,8 @@ const links = [
   { href: "#contacto", label: "Contacto" },
 ];
 
+// Server Component: solo el botón de tema y el menú móvil son islas cliente.
 export default function SiteHeader() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
   return (
     <>
       <a
@@ -63,52 +51,13 @@ export default function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-1.5">
-            <Button
-              variant="ghost"
-              size="icon-lg"
-              className="size-11"
-              aria-label="Cambiar entre tema claro y oscuro"
-              onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-            >
-              <Sun className="hidden size-[1.15rem] dark:block" aria-hidden />
-              <Moon className="size-[1.15rem] dark:hidden" aria-hidden />
-            </Button>
-            <Button asChild className="hidden h-10 px-4 sm:inline-flex">
-              <a href="#contacto">Hablemos</a>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon-lg"
-              className="size-11 md:hidden"
-              aria-expanded={open}
-              aria-controls="menu-movil"
-              aria-label={open ? "Cerrar menú" : "Abrir menú"}
-              onClick={() => setOpen((v) => !v)}
-            >
-              {open ? <X aria-hidden /> : <Menu aria-hidden />}
-            </Button>
+            <ThemeToggle />
+            <a href="#contacto" className={cn(buttonVariants(), "hidden h-10 px-4 sm:inline-flex")}>
+              Hablemos
+            </a>
+            <MobileMenu links={links} />
           </div>
         </div>
-
-        <nav
-          id="menu-movil"
-          aria-label="Navegación móvil"
-          className={cn("border-border/60 border-t md:hidden", open ? "block" : "hidden")}
-        >
-          <ul className="wrap flex flex-col py-2">
-            {links.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="border-border/40 flex min-h-12 items-center border-b text-base last:border-0"
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
       </header>
     </>
   );

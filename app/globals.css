@@ -195,6 +195,42 @@
   }
 }
 
+/* BorderBeam solo CSS: recorre el borde con offset-path. */
+.border-beam-dot {
+  animation: border-beam linear infinite;
+}
+@keyframes border-beam {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+/* NumberTicker solo CSS: cuenta de 0 al valor con una propiedad registrada. */
+@property --num {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+.number-ticker {
+  --num: var(--num-to);
+  counter-reset: num var(--num);
+  animation: number-tick 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.number-ticker::after {
+  content: counter(num);
+}
+@keyframes number-tick {
+  from {
+    --num: 0;
+  }
+  to {
+    --num: var(--num-to);
+  }
+}
+
 /* Aparición con scroll (CSS puro, mejora progresiva). */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
@@ -231,6 +267,9 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .number-ticker {
+    animation: none !important;
   }
   .animate-marquee,
   .animate-marquee-vertical,
