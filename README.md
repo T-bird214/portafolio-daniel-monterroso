@@ -19,7 +19,7 @@ Modo oscuro predeterminado y tema claro con next-themes. Diseño probado en 360 
 
 ### Componentes UI
 
-Base shadcn/ui (`components/ui/button|badge|card|tabs`, registro oficial) y Magic UI (MIT, `https://magicui.design/r/<nombre>.json`): border-beam, blur-fade, number-ticker, marquee, dot-pattern, shine-border, bento-grid y animated-gradient-text. Se agregan con `npx shadcn@latest add <url>`. Ajustes locales: blur-fade y number-ticker respetan movimiento reducido; dot-pattern usa círculos SVG simples cuando no hay brillo. `components/ui/when-idle.tsx` monta los efectos decorativos cuando el navegador está libre.
+Base shadcn/ui (`components/ui/button|badge|card|tabs`, registro oficial) y Magic UI (MIT, `https://magicui.design/r/<nombre>.json`): border-beam, number-ticker, marquee, dot-pattern, shine-border, bento-grid y animated-gradient-text. Se agregan con `npx shadcn@latest add <url>`. Ajustes locales por rendimiento y accesibilidad: number-ticker respeta movimiento reducido y se carga aparte (`lazy-number-ticker.tsx`, muestra el valor final mientras carga); dot-pattern usa círculos SVG simples; border-beam y dot-pattern se cargan cuando el navegador está libre (`when-idle.tsx`, `lazy-effects.tsx`). blur-fade se probó y se reemplazó por `reveal.tsx` (CSS `animation-timeline`, sin JavaScript).
 
 ### CV en inglés
 

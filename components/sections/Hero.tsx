@@ -3,7 +3,7 @@ import { ArrowDownRight, MapPin } from "lucide-react";
 import portrait from "@/public/images/daniel-monterroso.jpg";
 import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
 import { Button } from "@/components/ui/button";
-import { NumberTicker } from "@/components/ui/number-ticker";
+import { LazyNumberTicker } from "@/components/ui/lazy-number-ticker";
 import { WhenIdle } from "@/components/ui/when-idle";
 import { BorderBeam, DotPattern } from "@/components/ui/lazy-effects";
 import CvButtons from "@/components/CvButtons";
@@ -157,7 +157,7 @@ export default function Hero() {
                 </span>
                 <span aria-hidden>
                   {s.prefix}
-                  <NumberTicker value={s.value} className="text-foreground tracking-tight" />
+                  <LazyNumberTicker value={s.value} className="text-foreground tracking-tight" />
                   {s.suffix}
                 </span>
               </dd>
