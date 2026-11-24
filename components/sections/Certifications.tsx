@@ -1,104 +1,101 @@
-"use client";
+import { ArrowUpRight, BadgeCheck, Clock3 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/ui/reveal";
+import { Card } from "@/components/ui/card";
+import { certificationsRoadmap, type Certification } from "@/data/portfolio";
+import { certifications as pastCertifications } from "@/data/profile";
 
-import { motion } from "motion/react";
-import { GraduationCap, Award, Building2, Languages as LanguagesIcon } from "lucide-react";
-import { education, certifications, internalTraining, languages } from "@/data/profile";
+function StatusBadge({ cert }: { cert: Certification }) {
+  if (cert.status === "obtenida") {
+    return (
+      <Badge className="bg-signal-soft text-foreground h-6 gap-1 px-2.5">
+        <BadgeCheck aria-hidden />
+        Obtenida · {cert.date}
+      </Badge>
+    );
+  }
+  return (
+    <Badge variant="outline" className="h-6 gap-1 px-2.5">
+      <Clock3 aria-hidden />
+      En curso · {cert.date}
+    </Badge>
+  );
+}
 
 export default function Certifications() {
+  const groups = ["HubSpot Academy", "Google Skillshop"] as const;
   return (
-    <section className="bg-[#EFEFE7] py-24 transition-colors duration-300 sm:py-32 dark:bg-[#1A1A18]">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="mb-14 text-center"
-        >
-          <span className="font-mono text-[10px] tracking-[0.2em] text-[#5A5A40] uppercase dark:text-[#C68A3E]">
-            Formación
-          </span>
-          <h2 className="font-display mt-3 text-3xl text-[#1C1C1C] sm:text-4xl dark:text-[#ECECE3]">
-            Educación y certificaciones
-          </h2>
-        </motion.div>
-
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+    <section
+      id="certificaciones"
+      aria-labelledby="cert-title"
+      className="defer-render border-border bg-card/40 border-y py-20 sm:py-28"
+    >
+      <div className="wrap">
+        <div className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-end">
           <div>
-            <h3 className="mb-4 flex items-center gap-2 font-mono text-[10px] tracking-widest text-[#5A5A40] uppercase dark:text-[#C68A3E]">
-              <GraduationCap size={14} aria-hidden="true" /> Educación
-            </h3>
-            <ul className="space-y-4">
-              {education.map((item) => (
-                <li
-                  key={item.title}
-                  className="border-l-2 border-[#5A5A40]/30 pl-4 dark:border-[#C68A3E]/30"
-                >
-                  <p className="text-sm font-medium text-[#1C1C1C] dark:text-[#ECECE3]">
-                    {item.title}
-                  </p>
-                  <p className="text-xs text-[#6A6A5E] dark:text-[#A2A292]">
-                    {item.institution}
-                    {item.period ? ` · ${item.period}` : ""}
-                  </p>
-                </li>
-              ))}
-            </ul>
-
-            <h3 className="mt-8 mb-4 flex items-center gap-2 font-mono text-[10px] tracking-widest text-[#5A5A40] uppercase dark:text-[#C68A3E]">
-              <Building2 size={14} aria-hidden="true" /> Capacitación interna
-            </h3>
-            <ul className="space-y-4">
-              {internalTraining.map((item) => (
-                <li
-                  key={item.company}
-                  className="border-l-2 border-[#5A5A40]/30 pl-4 dark:border-[#C68A3E]/30"
-                >
-                  <p className="text-sm font-medium text-[#1C1C1C] dark:text-[#ECECE3]">
-                    {item.company}
-                  </p>
-                  <p className="text-xs text-[#6A6A5E] dark:text-[#A2A292]">{item.topics}</p>
-                </li>
-              ))}
-            </ul>
+            <p className="eyebrow">03 · Certificaciones</p>
+            <h2 id="cert-title" className="section-title mt-4">
+              Formalizando lo que <span className="serif-accent text-brand">ya hago</span>.
+            </h2>
           </div>
+          <p className="text-muted-foreground text-lg">
+            Estoy certificando el trabajo diario en HubSpot y la medición con Google. Cada tarjeta
+            se actualiza con la fecha y el enlace de verificación cuando la obtengo.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-10">
+          {groups.map((group) => (
+            <div key={group}>
+              <h3 className="eyebrow mb-4">{group}</h3>
+              <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {certificationsRoadmap
+                  .filter((c) => c.issuer === group)
+                  .map((cert) => (
+                    <li key={cert.title}>
+                      <Reveal className="h-full">
+                        <Card className="ring-border h-full justify-between gap-6 rounded-2xl p-5">
+                          <div>
+                            <p className="text-muted-foreground text-xs">{cert.issuer}</p>
+                            <p className="mt-1.5 text-lg font-semibold tracking-tight">
+                              {cert.title}
+                            </p>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <StatusBadge cert={cert} />
+                            {cert.status === "obtenida" && cert.url && (
+                              <a
+                                href={cert.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex min-h-11 items-center gap-1 text-sm font-medium underline underline-offset-4"
+                              >
+                                Verificar
+                                <ArrowUpRight className="size-4" aria-hidden />
+                                <span className="sr-only">
+                                  {cert.title} (se abre en otra pestaña)
+                                </span>
+                              </a>
+                            )}
+                          </div>
+                        </Card>
+                      </Reveal>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          ))}
 
           <div>
-            <h3 className="mb-4 flex items-center gap-2 font-mono text-[10px] tracking-widest text-[#5A5A40] uppercase dark:text-[#C68A3E]">
-              <Award size={14} aria-hidden="true" /> Certificaciones
-            </h3>
-            <ul className="space-y-4">
-              {certifications.map((item) => (
-                <li
-                  key={item.title}
-                  className="border-l-2 border-[#5A5A40]/30 pl-4 dark:border-[#C68A3E]/30"
-                >
-                  <p className="text-sm font-medium text-[#1C1C1C] dark:text-[#ECECE3]">
-                    {item.title}
-                  </p>
-                  <p className="text-xs text-[#6A6A5E] dark:text-[#A2A292]">
-                    {item.institution}
-                    {item.period ? ` · ${item.period}` : ""}
-                  </p>
-                </li>
-              ))}
-            </ul>
-
-            <h3 className="mt-8 mb-4 flex items-center gap-2 font-mono text-[10px] tracking-widest text-[#5A5A40] uppercase dark:text-[#C68A3E]">
-              <LanguagesIcon size={14} aria-hidden="true" /> Idiomas
-            </h3>
-            <ul className="space-y-3">
-              {languages.map((lang) => (
-                <li key={lang.name}>
-                  <div className="mb-1 flex justify-between text-xs">
-                    <span className="text-[#3A3A32] dark:text-[#D5D5C8]">
-                      {lang.name}
-                      {lang.level ? ` · ${lang.level}` : ""}
-                    </span>
-                    <span className="font-mono text-[#6A6A5E] dark:text-[#A2A292]">
-                      {lang.level ?? "En desarrollo"}
-                    </span>
-                  </div>
+            <h3 className="eyebrow mb-4">Formación complementaria</h3>
+            <ul className="border-border bg-border grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2">
+              {pastCertifications.map((c) => (
+                <li key={c.title} className="bg-background flex flex-col gap-1 p-5">
+                  <span className="font-medium">{c.title}</span>
+                  <span className="text-muted-foreground text-sm">
+                    {c.institution}
+                    {c.period ? ` · ${c.period}` : ""}
+                  </span>
                 </li>
               ))}
             </ul>
